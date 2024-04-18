@@ -8,8 +8,6 @@ const SubordinateDatabase = require("../subordinatesDatabase.js").SubordinatesDa
 
 const embedColor = 0x0099FF;
 
-const MAX_MEMBERS_BEFORE_NCO = 10;
-
 const memberReportCommand = new SlashCommandBuilder()
   .setName("member_report")
   .setDescription("Make a full report on a member")
@@ -132,17 +130,11 @@ module.exports = {
     let multiple = false;
 
     try {
+        console.log(interaction.options.getMentionable("target"))
       if (interaction.options.getMentionable("target")) {
         if (interaction.options.getMentionable("target").members) {
           if (interaction.options.getMentionable("target").members.size === 0) {
             interaction.followUp("No members have that role");
-            return;
-          }
-
-          const { juniorEnlistedRoleId } = interaction.client.settings.get(interaction.guild.id);
-
-          if (interaction.options.getMentionable("target").members.size >= MAX_MEMBERS_BEFORE_NCO && !interaction.member.permissions.has(PermissionFlagsBits.TimeoutMembers)) {
-            interaction.followUp("You do not have permission to run this commnd for more than " + MAX_MEMBERS_BEFORE_NCO + " members");
             return;
           }
 
